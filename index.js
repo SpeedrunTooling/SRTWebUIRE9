@@ -160,15 +160,15 @@ function appendData(data) {
 	DrawTextBlocks(["DARank", "DAScore"], [data.DARank, data.DAScore], ["white", "green2"], HideDA);
 
 	// Player HP
-	if (data.PlayerHP) {
-		let playerPercent = data.PlayerHP.CurrentMaxHP > 0 ? data.PlayerHP.CurrentHP / data.PlayerHP.CurrentMaxHP : 0;
-		let _colors = GetColorByPercent(data.PlayerHP.CurrentHP, data.PlayerHP.CurrentMaxHP);
-		DrawProgressBar(data.PlayerHP.CurrentHP, data.PlayerHP.CurrentMaxHP, playerPercent, "Player: ", _colors);
+	if (data.PlayerContext.HP) {
+		let playerPercent = data.PlayerContext.HP.CurrentMaxHP > 0 ? data.PlayerContext.HP.CurrentHP / data.PlayerContext.HP.CurrentMaxHP : 0;
+		let _colors = GetColorByPercent(data.PlayerContext.HP.CurrentHP, data.PlayerContext.HP.CurrentMaxHP);
+		DrawProgressBar(data.PlayerContext.HP.CurrentHP, data.PlayerContext.HP.CurrentMaxHP, playerPercent, "Player: ", _colors);
 	}
 
 	// Enemy HPs
-	if (!HideEnemies && data.EnemyHPs) {
-		var filteredEnemies = data.EnemyHPs.filter(function (m) {
+	if (!HideEnemies && data.EnemyContexts.HP) {
+		var filteredEnemies = data.EnemyContexts.HP.filter(function (m) {
 			// Filter out enemies with 0 MaxHP (invalid/empty slots)
 			if (m.CurrentMaxHP <= 0) return false;
 			// If ShowOnlyDamaged, only show enemies that have taken damage
