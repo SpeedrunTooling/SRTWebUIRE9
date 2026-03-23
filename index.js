@@ -167,22 +167,22 @@ function appendData(data) {
 	}
 
 	// Enemy HPs
-	if (!HideEnemies && data.EnemyContexts.HP) {
-		var filteredEnemies = data.EnemyContexts.HP.filter(function (m) {
+	if (!HideEnemies && data.EnemyContexts) {
+		var filteredEnemies = data.EnemyContexts.filter(function (m) {
 			// Filter out enemies with 0 MaxHP (invalid/empty slots)
-			if (m.CurrentMaxHP <= 0) return false;
+			if (m.HP.CurrentMaxHP <= 0) return false;
 			// If ShowOnlyDamaged, only show enemies that have taken damage
-			if (ShowOnlyDamaged && m.CurrentHP >= m.CurrentMaxHP) return false;
+			if (ShowOnlyDamaged && m.HP.CurrentHP >= m.HP.CurrentMaxHP) return false;
 			return true;
 		});
 
 		filteredEnemies.sort(function (a, b) {
-			let pctA = a.CurrentMaxHP > 0 ? a.CurrentHP / a.CurrentMaxHP : 0;
-			let pctB = b.CurrentMaxHP > 0 ? b.CurrentHP / b.CurrentMaxHP : 0;
-			return Asc(pctA, pctB) || Desc(a.CurrentHP, b.CurrentHP);
+			let pctA = a.HP.CurrentMaxHP > 0 ? a.HP.CurrentHP / a.HP.CurrentMaxHP : 0;
+			let pctB = b.HP.CurrentMaxHP > 0 ? b.HP.CurrentHP / b.HP.CurrentMaxHP : 0;
+			return Asc(pctA, pctB) || Desc(a.HP.CurrentHP, b.HP.CurrentHP);
 		}).forEach(function (item) {
-			let percent = item.CurrentMaxHP > 0 ? item.CurrentHP / item.CurrentMaxHP : 0;
-			DrawProgressBar(item.CurrentHP, item.CurrentMaxHP, percent, "", ["danger", "red"]);
+			let percent = item.HP.CurrentMaxHP > 0 ? item.HP.CurrentHP / item.HP.CurrentMaxHP : 0;
+			DrawProgressBar(item.HP.CurrentHP, item.HP.CurrentMaxHP, percent, "", ["danger", "red"]);
 		});
 	}
 }
