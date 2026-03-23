@@ -153,8 +153,8 @@ function appendData(data) {
 	mainContainer.innerHTML = "";
 
 	// Version Info
-	DrawTextBlock("Game", data.GameName, ["white", "green2"], false);
-	DrawTextBlock("Version", data.VersionInfo, ["white", "green2"], false);
+	//DrawTextBlock("Game", data.GameName, ["white", "green2"], false);
+	DrawTextBlock("SRT Version", data.VersionInfo, ["white", "green2"], false);
 
 	// DA Rank / Score
 	DrawTextBlocks(["DARank", "DAScore"], [data.DARank, data.DAScore], ["white", "green2"], HideDA);
@@ -171,6 +171,8 @@ function appendData(data) {
 		var filteredEnemies = data.EnemyContexts.filter(function (m) {
 			// Filter out enemies with 0 MaxHP (invalid/empty slots)
 			if (m.HP.CurrentMaxHP <= 0) return false;
+			// Filter out dead enemies.
+			if (m.HP.CurrentHP <= 0) return false;
 			// If ShowOnlyDamaged, only show enemies that have taken damage
 			if (ShowOnlyDamaged && m.HP.CurrentHP >= m.HP.CurrentMaxHP) return false;
 			return true;
