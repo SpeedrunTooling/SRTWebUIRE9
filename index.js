@@ -120,8 +120,14 @@ function GetBarStyle() {
 //	colors = array of color class names as string
 function DrawProgressBar(current, max, percent, label, colors) {
 	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `<div class="bar"${GetBarStyle()}><div class="${colors[0]}" style="width: ${(percent * 100)}%; height: ${(percent * 100)}%">
-		<div id="currentprogress">${label}${current} / ${max}</div><div class="${colors[1]}" id="percentprogress">${(percent * 100).toFixed(1)}%</div></div></div>`;
+	mainContainer.innerHTML += `
+	<div class="bar"${GetBarStyle()}>
+		<div class="${colors[0]}" style="width: ${(percent * 100)}%; height: ${(percent * 100)}%">
+			<div id="currentprogress">${label}${current} / ${max}</div>
+			<div class="${colors[1]}" id="percentprogress">${(percent * 100).toFixed(1)}%</div>
+		</div>
+	</div>
+	`;
 }
 
 //	<summary>
