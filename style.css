@@ -36,15 +36,13 @@ body {
 	height: 30px;
 	background: rgba(34, 26, 26, 0.6);
 	border: rgba(60, 60, 60, 1) solid 2px;
-	display: flex;
-	align-items: center;
 }
 
 #currentprogress {
 	position: relative;
 	display: flex;
-	justify-content: start;
 	align-items: center;
+	justify-content: start;
 	padding-left: 10px;
 	font-size: 24px;
 	line-height: 30px;
@@ -57,6 +55,7 @@ body {
 	right: 0px;
 	display: flex;
 	align-items: center;
+	justify-content: end;
 	padding-right: 10px;
 	font-size: 24px;
 	line-height: 30px;
