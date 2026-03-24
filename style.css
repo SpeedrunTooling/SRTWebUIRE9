@@ -31,6 +31,7 @@ body {
 
 .bar {
 	position: relative;
+	display: flex;
 	left: -1px;
 	width: calc(100% - 8px);
 	height: 30px;
@@ -39,28 +40,29 @@ body {
 }
 
 #currentprogress {
-	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: start;
-	padding-left: 10px;
+	justify-content: left;
+	padding-left: 5px;
 	font-size: 24px;
-	line-height: 30px;
-	width: 420px;
-	height: 30px;
 }
 
 #percentprogress {
-	position: absolute;
-	top: 0px;
-	right: 0px;
 	display: flex;
 	align-items: center;
-	justify-content: end;
-	padding-right: 10px;
+	justify-content: right;
+	padding-right: 5px;
 	font-size: 24px;
-	line-height: 30px;
-	height: 30px;
+}
+
+.bar-text {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+	padding: 0 5px;
+	box-sizing: border-box;
+	font-size: 24px;
 }
 
 /* HP BAR COLORS */
