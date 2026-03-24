@@ -68,7 +68,9 @@ var Desc = function (a, b) {
 };
 
 function getData() {
-	fetch(JSON_ENDPOINT)
+	fetch(JSON_ENDPOINT, {
+		targetAddressSpace: "loopback",
+	})
 		.then(function (response) {
 			return response.json();
 		})
