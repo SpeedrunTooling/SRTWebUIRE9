@@ -192,7 +192,7 @@ function GetEnemyNameByKindID(kindID) {
 		case 58896: return "Plant 42";
 		case 58608: return "Soldier";
 		case 58656: return "Hunk";
-		default: return "";
+		default: return null;
 	}
 }
 
@@ -232,7 +232,10 @@ function appendData(data) {
 			return Asc(pctA, pctB) || Desc(a.HP.CurrentHP, b.HP.CurrentHP);
 		}).forEach(function (item) {
 			let percent = item.HP.CurrentMaxHP > 0 ? item.HP.CurrentHP / item.HP.CurrentMaxHP : 0;
-			DrawProgressBar(item.HP.CurrentHP, item.HP.CurrentMaxHP, percent, GetEnemyNameByKindID(item.KindID), ["danger", "red"]);
+			let enemyName = GetEnemyNameByKindID(item.KindID);
+			if (enemyName)
+				enemyName += " ";
+			DrawProgressBar(item.HP.CurrentHP, item.HP.CurrentMaxHP, percent, enemyName ?? "", ["danger", "red"]);
 		});
 	}
 }
