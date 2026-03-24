@@ -1,10 +1,10 @@
 // LOCAL JSON SERVER SETTINGS
-var JSON_ADDRESS = "127.0.0.1";
+const JSON_ADDRESS = "127.0.0.1";
 const JSON_PORT = 7190;
-const POLLING_RATE = 333;
-var JSON_ENDPOINT = `http://${JSON_ADDRESS}:${JSON_PORT}/`;
+const JSON_ENDPOINT = `http://${JSON_ADDRESS}:${JSON_PORT}/`;
 
 // PARAM VARIABLES
+var PollingRate = 333;
 var HideDA = false;
 var HideEnemies = false;
 var ShowOnlyDamaged = false;
@@ -14,6 +14,14 @@ var BarHeight = null;
 window.onload = function () {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
+
+	const pollingRate = urlParams.get('pollingrate');
+	if (pollingRate != null) {
+		let parsed = parseInt(pollingRate);
+		if (!isNaN(parsed) && parsed > 0) {
+			PollingRate = parsed;
+		}
+	}
 
 	// HIDE DA
 	const da = urlParams.get('hideda');
