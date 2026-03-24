@@ -8,7 +8,8 @@ var JSON_ENDPOINT = `http://${JSON_ADDRESS}:${JSON_PORT}/`;
 var HideDA = false;
 var HideEnemies = false;
 var ShowOnlyDamaged = false;
-var BarWidth = null; // null = default (100% of parent), or a number 1-100 for vw%
+var BarWidth = null;
+var BarHeight = null;
 
 window.onload = function () {
 	const queryString = window.location.search;
@@ -38,6 +39,15 @@ window.onload = function () {
 		let parsed = parseFloat(barwidth);
 		if (!isNaN(parsed) && parsed > 0 && parsed <= 100) {
 			BarWidth = parsed;
+		}
+	}
+
+	// LOCK BAR HEIGHT TO Npx OF VIEWPORT
+	const barheight = urlParams.get('barheight');
+	if (barheight != null) {
+		let parsed = parseFloat(barheight);
+		if (!isNaN(parsed) && parsed > 0) {
+			BarHeight = parsed;
 		}
 	}
 
@@ -71,16 +81,22 @@ function getData() {
 }
 
 //	<summary>
-//	GET THE WIDTH STYLE STRING FOR BARS
+//	GET THE STYLE STRING FOR BARS
 //	</summary>
-//	Returns inline style for bar container width.
-//	If BarWidth is set, uses vw units; otherwise empty string (falls back to CSS default).
-function GetBarWidthStyle()
-{
-	if (BarWidth != null) {
-		return ` style="width:${BarWidth}vw"`;
+//	Returns inline style for bar container.
+//	If BarWidth or BarHeight is set, uses vw units; otherwise empty string (falls back to CSS default).
+function GetBarStyle() {
+	if (BarWidth != null && BarHeight != null) {
+		return ` style="width: ${BarWidth}vw; height: ${BarHeight}px"`;
 	}
-	return "";
+	else if (BarWidth != null) {
+		return ` style="width: ${BarWidth}vw"`;
+	}
+	else if (BarWidth != null) {
+		return ` style="height: ${BarHeight}px"`;
+	}
+	else
+		return "";
 }
 
 //	<summary>
@@ -92,8 +108,7 @@ function GetBarWidthStyle()
 //	percent = current / max as float 0 - 1
 //	label = string label for progress bar (optional)
 //	colors = array of color class names as string
-function DrawProgressBar(current, max, percent, label, colors)
-{
+function DrawProgressBar(current, max, percent, label, colors) {
 	let mainContainer = document.getElementById("srtQueryData");
 	mainContainer.innerHTML += `<div class="bar"${GetBarWidthStyle()}><div class="progressbar ${colors[0]}" style="width:${(percent * 100)}%">
 		<div id="currentprogress">${label}${current} / ${max}</div><div class="${colors[1]}" id="percentprogress">${(percent * 100).toFixed(1)}%</div></div></div>`;
@@ -107,8 +122,7 @@ function DrawProgressBar(current, max, percent, label, colors)
 //	val = current value
 //	colors = array of color class names as string
 //	hideParam = user chosen query parameter
-function DrawTextBlock(label, val, colors, hideParam)
-{
+function DrawTextBlock(label, val, colors, hideParam) {
 	if (hideParam) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
 	mainContainer.innerHTML += `<div class="title ${colors[0]}">${label}: <span class="${colors[1]}">${val}</span></div>`;
@@ -122,13 +136,11 @@ function DrawTextBlock(label, val, colors, hideParam)
 //	vals = current value array
 //	colors = array of color class names as string
 //	hideParam = user chosen query parameter
-function DrawTextBlocks(labels, vals, colors, hideParam)
-{
+function DrawTextBlocks(labels, vals, colors, hideParam) {
 	if (hideParam) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
 	let children = "";
-	for (var i = 0; i < labels.length; i++)
-	{
+	for (var i = 0; i < labels.length; i++) {
 		children += `<div class="title ${colors[0]}">${labels[i]}: <span class="${colors[1]}">${vals[i]}</span></div>`
 	}
 	mainContainer.innerHTML += `<div class="textblock">${children}</div>`;
@@ -137,8 +149,7 @@ function DrawTextBlocks(labels, vals, colors, hideParam)
 //	<summary>
 //	GET HP BAR COLOR BASED ON PERCENTAGE
 //	</summary>
-function GetColorByPercent(current, max)
-{
+function GetColorByPercent(current, max) {
 	if (max <= 0) return ["dead", "grey"];
 	let pct = current / max;
 	if (pct > 0.75) return ["fine", "green"];
@@ -146,6 +157,41 @@ function GetColorByPercent(current, max)
 	else if (pct > 0.25) return ["caution", "orange"];
 	else if (pct > 0) return ["danger", "red"];
 	return ["dead", "grey"];
+}
+
+function GetEnemyNameByKindID(kindID) {
+	switch (kindID) {
+		case 58224: return "The Girl";
+		case 58272: return "The Girl";
+		case 59088: return "Gideon";
+		case 57264: return "Zombie";
+		case 58032: return "Zombie";
+		case 57744: return "Zombie";
+		case 57744: return "Zombie";
+		case 57312: return "Zombie";
+		case 57648: return "Zombie";
+		case 57504: return "Organ Zombie";
+		case 57360: return "Chef";
+		case 57408: return "Singing Zombie";
+		case 58368: return "Chunk";
+		case 57456: return "Maid Zombie";
+		case 57552: return "Noise Zombie";
+		case 58176: return "Titan Spinner";
+		case 58128: return "Licker";
+		case 57840: return "Blisterborne";
+		case 57792: return "Chainsaw Zombie";
+		case 57984: return "BSAA Zombie";
+		case 58416: return "Garmr";
+		case 58464: return "Gideon";
+		case 58992: return "Child";
+		case 58560: return "Mr. X";
+		case 58800: return "Seedling";
+		case 58944: return "Seedling";
+		case 58896: return "Plant 42";
+		case 58608: return "Soldier";
+		case 58656: return "Hunk";
+		default: return "";
+	}
 }
 
 function appendData(data) {
@@ -184,7 +230,7 @@ function appendData(data) {
 			return Asc(pctA, pctB) || Desc(a.HP.CurrentHP, b.HP.CurrentHP);
 		}).forEach(function (item) {
 			let percent = item.HP.CurrentMaxHP > 0 ? item.HP.CurrentHP / item.HP.CurrentMaxHP : 0;
-			DrawProgressBar(item.HP.CurrentHP, item.HP.CurrentMaxHP, percent, "", ["danger", "red"]);
+			DrawProgressBar(item.HP.CurrentHP, item.HP.CurrentMaxHP, percent, GetEnemyNameByKindID(item.KindID), ["danger", "red"]);
 		});
 	}
 }
