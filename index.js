@@ -60,7 +60,7 @@ window.onload = function () {
 	}
 
 	getData();
-	setInterval(getData, POLLING_RATE);
+	setInterval(getData, PollingRate);
 };
 
 var Asc = function (a, b) {
