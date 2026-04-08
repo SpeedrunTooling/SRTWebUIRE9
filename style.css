@@ -33,7 +33,7 @@ body {
 	position: relative;
 	display: flex;
 	left: -1px;
-	width: calc(100% - 8px);
+	width: calc(95% - 8px);
 	height: 30px;
 	background: rgba(34, 26, 26, 0.6);
 	border: rgba(60, 60, 60, 1) solid 2px;

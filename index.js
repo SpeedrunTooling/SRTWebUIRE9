@@ -121,10 +121,13 @@ function GetBarStyle() {
 function DrawProgressBar(current, max, percent, label, colors) {
 	let mainContainer = document.getElementById("srtQueryData");
 	mainContainer.innerHTML += `
-	<div class="bar"${GetBarStyle()}>
-		<div class="bar-text ${colors[0]}" style="width: ${(percent * 100)}%">
-			<span>${label}${current} / ${max}</span><span class="${colors[1]}">${(percent * 100).toFixed(1)}%</span>
-		</div>
+	<div style="display: flex;">
+	<span class="bar"${GetBarStyle()}>
+		<span class="bar-text ${colors[0]}" style="width: ${(percent * 100)}%">
+			<span>${label}${current} / ${max}</span>
+		</span>
+	</span>
+	<span class="bar-text ${colors[1]}">${(percent * 100).toFixed(1)}%</span>
 	</div>
 	`;
 }
